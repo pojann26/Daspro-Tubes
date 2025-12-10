@@ -73,10 +73,8 @@ def IPKTranskrip(T):
         if IsEmpty(listMK):
             return 0.0
         else:
-            nilai = NilaiSekarangMK(FirstElmt(listMK))
-            sks = GetSKS(FirstElmt(listMK))
-            if nilai >= 0:
-                total = nilai * sks
+            if NilaiSekarangMK(FirstElmt(listMK)) >= 0:
+                total = NilaiSekarangMK(FirstElmt(listMK)) * GetSKS(FirstElmt(listMK))
             else:
                 total = 0
             return total + hitungTotalNilaiXSKS(Tail(listMK))
@@ -91,13 +89,10 @@ def IPKTranskrip(T):
                 sks = 0
             return sks + hitungTotalSKS(Tail(listMK))
     
-    listMK = GetListMatkul(T)
-    totalSKS = hitungTotalSKS(listMK)
-    
-    if totalSKS == 0:
+    if hitungTotalSKS(GetListMatkul(T)) == 0:
         return 0.0
     else:
-        return hitungTotalNilaiXSKS(listMK) / totalSKS
+        return hitungTotalNilaiXSKS(GetListMatkul(T)) / hitungTotalSKS(GetListMatkul(T))
     
 if __name__ == "__main__" : 
     M = MakeMhs("A11.2020.01234", "Reno")

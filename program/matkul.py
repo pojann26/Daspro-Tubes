@@ -32,11 +32,11 @@ def NilaiSekarangMK(MK):
     # {NilaiSekarangMK(MK) mengambil nilai akhir dari MK}
     # {Jika list kosong -> -1.0}
     # {Jika tidak -> elemen terakhir}
-    listNilai = GetNilai(MK)
-    if IsEmpty(listNilai):
+    if IsEmpty(GetNilai(MK)):
         return -1.0
     else:
-        return LastElmt(listNilai)
+        return LastElmt(GetNilai(MK))
+
 
 def SudahAmbilMK(MK):
     # SudahAmbilMK: Matkul -> boolean
