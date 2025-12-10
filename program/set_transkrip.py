@@ -193,9 +193,7 @@ def CountMhsDenganIPKRentang(S, a, b):
     if IsEmpty(S):
         return 0
     else:
-        T = FirstElmt(S)
-        ipk = IPKTranskrip(T)
-        if a <= ipk <= b:
+        if a <= IPKTranskrip(T) <= b:
             return 1 + CountMhsDenganIPKRentang(Tail(S), a, b)
         else:
             return CountMhsDenganIPKRentang(Tail(S), a, b)

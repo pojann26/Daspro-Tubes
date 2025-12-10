@@ -8,7 +8,8 @@ from matkul import *
 # KONSTRUKTOR
 def MakeTranskrip(M, listMK):
     # MakeTranskrip: Mhs, list of Matkul -> Transkrip
-    # {MakeTranskrip(M, listMK) membuat objek Transkrip}
+    # {MakeTranskrip(M, listMK) membuat objek Transkrip dengan data
+    # mahasiswa M dan list mata kuliah listMK}
     return [M, listMK]
 
 # SELEKTOR
@@ -25,7 +26,7 @@ def GetListMatkul(T):
 # OPERATOR
 def CariMatkul(T, namaMK):
     # CariMatkul: Transkrip, string -> Matkul
-    # {CariMatkul(T, namaMK) mencari Matkul dari transkrip T berdasarkan nama}
+    # {CariMatkul(T, namaMK) mencari Matkul dari transkrip T berdasarkan nama mata kuliah namaMK}
     def cariRekursif(listMK):
         if IsEmpty(listMK):
             return None
@@ -38,7 +39,9 @@ def CariMatkul(T, namaMK):
 
 def TotalSKSLulus(T):
     # TotalSKSLulus: Transkrip -> integer
-    # {TotalSKSLulus(T) menjumlahkan SKS dari mata kuliah yang lulus}
+    # {TotalSKSLulus(T) menjumlahkan SKS dari mata kuliah yang lulus 
+    # (nilai ≥ 2.0) pada transkrip T}
+
     def hitungRekursif(listMK):
         if IsEmpty(listMK):
             return 0
@@ -53,7 +56,8 @@ def TotalSKSLulus(T):
 
 def JumlahMatkulMengulang(T):
     # JumlahMatkulMengulang: Transkrip -> integer
-    # {JumlahMatkulMengulang(T) menghitung jumlah mata kuliah yang diulang}
+    # {JumlahMatkulMengulang(T) menghitung jumlah mata kuliah yang diulang 
+    # (panjang list nilai > 1) pada transkrip T}
     def hitungRekursif(listMK):
         if IsEmpty(listMK):
             return 0
