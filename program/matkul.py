@@ -55,8 +55,12 @@ def LulusMK(MK):
 
 if __name__ == "__main__" : 
     MK1 = MakeMatkul("Daspro", 3, [2.0, 3.0])
-    print(MK1)
+    MK2 = MakeMatkul("Matdis",2,[])
+    print(GetNamaMK(MK1))
+    print(GetSKS(MK1))
+    print(GetNilai(MK1))
     print(NilaiSekarangMK(MK1))
+    print(NilaiSekarangMK(MK2))
     print(SudahAmbilMK(MK1))
     print(MengulangMK(MK1))
     print(LulusMK(MK1))

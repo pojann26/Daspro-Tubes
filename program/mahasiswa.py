@@ -21,6 +21,5 @@ def GetNama(M):
 if __name__ == "__main__" : 
     M1 = MakeMhs("A11.2020.01234", "Reno")
     print(M1)
-    # M2 = MakeMhs("24060120150183","Pria Solo")
     print(GetNIM(M1))
     print(GetNama(M1))

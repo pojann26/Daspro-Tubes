@@ -101,8 +101,9 @@ if __name__ == "__main__" :
     MK3 = MakeMatkul("Kalkulus", 4, [3.5])
     T = MakeTranskrip(M, [MK1, MK2, MK3])
 
+    print(GetMhs(T))
+    print(GetListMatkul(T))
     print(CariMatkul(T, "Daspro"))
-    print(CariMatkul(T, "Matdis"))
     print(TotalSKSLulus(T))
     print(JumlahMatkulMengulang(T))
     print(IPKTranskrip(T))
