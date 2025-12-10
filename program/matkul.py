@@ -9,7 +9,6 @@ def MakeMatkul(namamk, sks, listNilai):
     # MakeMatkul: string, integer, list of real -> Matkul
     # {MakeMatkul(nama, sks, listNilai) membuat objek Matkul dengan nama
     # mata kuliah nama, jumlah SKS sks, dan list nilai listNilai}
-
     return [namamk, sks, listNilai]
 
 # SELEKTOR
