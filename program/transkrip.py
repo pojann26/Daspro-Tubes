@@ -69,37 +69,34 @@ def JumlahMatkulMengulang(T):
 def IPKTranskrip(T):
     # IPKTranskrip: Transkrip -> real
     # {IPKTranskrip(T) menghitung IPK dari transkrip T}
-    def hitungTotalNilaiXSKS(listMK):
+    def hitung(listMK):
         if IsEmpty(listMK):
-            return 0.0
+            return (0.0, 0)
         else:
-            if NilaiSekarangMK(FirstElmt(listMK)) >= 0:
-                total = NilaiSekarangMK(FirstElmt(listMK)) * GetSKS(FirstElmt(listMK))
+            MK = FirstElmt(listMK)
+
+            if NilaiSekarangMK(MK) >= 0:
+                totalNilai = NilaiSekarangMK(MK) * GetSKS(MK)
+                totalSKS = GetSKS(MK)
             else:
-                total = 0
-            return total + hitungTotalNilaiXSKS(Tail(listMK))
-    
-    def hitungTotalSKS(listMK):
-        if IsEmpty(listMK):
-            return 0
-        else:
-            if NilaiSekarangMK(FirstElmt(listMK)) >= 0:
-                sks = GetSKS(FirstElmt(listMK))
-            else:
-                sks = 0
-            return sks + hitungTotalSKS(Tail(listMK))
-    
-    if hitungTotalSKS(GetListMatkul(T)) == 0:
+                totalNilai = 0
+                totalSKS = 0
+
+            subtotalNilai, subtotalSKS = hitung(Tail(listMK))
+            return (totalNilai + subtotalNilai, totalSKS + subtotalSKS)
+
+    totalNilai, totalSKS = hitung(GetListMatkul(T))
+
+    if totalSKS == 0:
         return 0.0
     else:
-        return hitungTotalNilaiXSKS(GetListMatkul(T)) / hitungTotalSKS(GetListMatkul(T))
+        return totalNilai / totalSKS
     
 if __name__ == "__main__" : 
     M = MakeMhs("A11.2020.01234", "Reno")
     MK1 = MakeMatkul("Daspro", 3, [2.0, 3.0])
     MK2 = MakeMatkul("Matdis", 2, [3.0, 4.0])
-    MK3 = MakeMatkul("Kalkulus", 4, [3.5])
-    T = MakeTranskrip(M, [MK1, MK2, MK3])
+    T = MakeTranskrip(M, [MK1, MK2])
 
     print(GetMhs(T))
     print(GetListMatkul(T))
