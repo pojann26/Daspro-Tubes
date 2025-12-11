@@ -16,7 +16,7 @@ def MakeSetTranskrip():
 def AddTranskrip(S, T):
     # AddTranskrip: SetTranskrip, Transkrip -> SetTranskrip
     # {AddTranskrip(S, T) menambahkan transkrip T ke akhir SetTranskrip S
-    #  jika NIM mahasiswa pada T belum ada di S. Jika sudah ada, tidak ditambahkan}}
+    # jika NIM mahasiswa pada T belum ada di S. Jika sudah ada, tidak ditambahkan}}
     
     def sudahAda(nim, listT):
         if IsEmpty(listT):
@@ -40,12 +40,10 @@ def AddNilaiMatkul(S, nim, namaMK, nilai):
     def UpdateListMatkul(listMK, namaMK, nilaiBaru):
         if IsEmpty(listMK):
             return []
-        
         MK = FirstElmt(listMK)
         if GetNamaMK(MK) == namaMK:
-            listNilaiBaru = Konsi(GetNilai(MK), nilaiBaru)
-            MK_Baru = [GetNamaMK(MK), GetSKS(MK), listNilaiBaru]
-            return Konso(MK_Baru, Tail(listMK))
+            return Konso(
+                MakeMatkul(GetNamaMK(MK), GetSKS(MK), Konsi(GetNilai(MK), nilaiBaru)),Tail(listMK))
         else:
             return Konso(MK, UpdateListMatkul(Tail(listMK), namaMK, nilaiBaru))
         
@@ -54,9 +52,8 @@ def AddNilaiMatkul(S, nim, namaMK, nilai):
             return []
         T = FirstElmt(S)
         if GetNIM(GetMhs(T)) == nim:
-            listMKBaru = UpdateListMatkul(GetListMatkul(T), namaMK, nilai)
-            TBaru = MakeTranskrip(GetMhs(T), listMKBaru)
-            return Konso(TBaru, Tail(S))
+            return Konso(
+                MakeTranskrip(GetMhs(T), UpdateListMatkul(GetListMatkul(T), namaMK, nilai)),Tail(S))
         else:
             return Konso(T, UpdateSetTranskrip(Tail(S)))
 
@@ -77,21 +74,16 @@ def CariTranskripMhs(S, nim):
 def TopIPK(S):
     # TopIPK: SetTranskrip -> Mhs
     # {TopIPK(S) menghasilkan mahasiswa dengan IPK tertinggi dari SetTranskrip S }
-    
-    def cariMax(listT, mhsMax, ipkMax):
-        if IsEmpty(listT):
-            return mhsMax
-        else:
-            T = FirstElmt(listT)
-            if IPKTranskrip(T) > ipkMax:
-                return cariMax(Tail(listT), GetMhs(T), IPKTranskrip(T))
-            else:
-                return cariMax(Tail(listT), mhsMax, ipkMax)
-    
     if IsEmpty(S):
         return None
-    else:
-        return cariMax(Tail(S), GetMhs(FirstElmt(S)), IPKTranskrip(FirstElmt(S)))
+    
+    def maxRec(listT, mhsMax):
+        if IsEmpty(listT):
+            return mhsMax
+        T = FirstElmt(listT)
+        return maxRec(Tail(listT), T if IPKTranskrip(T) > IPKTranskrip(mhsMax) else mhsMax)
+
+    return maxRec(Tail(S), FirstElmt(S))
 
 def CountMhsPernahMengulang(S):
     # CountMhsPernahMengulang: SetTranskrip -> integer
@@ -133,9 +125,7 @@ def MatkulPalingSeringDiulang(S):
     # MatkulPalingSeringDiulang: SetTranskrip -> string
     # {MatkulPalingSeringDiulang(S) menghasilkan nama mata kuliah yang
     # paling sering diulang (frekuensi tertinggi) pada SetTranskrip S}
- 
-    
-    # Fungsi untuk mengumpulkan semua nama matkul yang diulang
+
     def kumpulkanMatkulDiulang(listT):
         if IsEmpty(listT):
             return []
@@ -151,7 +141,7 @@ def MatkulPalingSeringDiulang(S):
             
             return ambilMatkulDiulang(GetListMatkul(T)) + kumpulkanMatkulDiulang(Tail(listT))
     
-    # Fungsi untuk menghitung frekuensi
+    # utk ngitung frekuensi
     def hitungFrekuensi(nama, listNama):
         if IsEmpty(listNama):
             return 0
@@ -160,24 +150,18 @@ def MatkulPalingSeringDiulang(S):
         else:
             return hitungFrekuensi(nama, Tail(listNama))
     
-    # Fungsi untuk mencari nama dengan frekuensi tertinggi
+    # cari nama frekuensi tertinggi
     def cariMaxFrekuensi(listNama, allNama):
         if IsEmpty(listNama):
             return None
         else:
-            nama = FirstElmt(listNama)
-            frek = hitungFrekuensi(nama, allNama)
-            sisaNama = Tail(listNama)
-            
-            if IsEmpty(sisaNama):
-                return nama
+            if IsEmpty(Tail(listNama)):
+                return FirstElmt(listNama)
             else:
-                namaMax = cariMaxFrekuensi(sisaNama, allNama)
-                frekMax = hitungFrekuensi(namaMax, allNama)
-                if frek > frekMax:
-                    return nama
+                if hitungFrekuensi(FirstElmt(listNama), allNama) > hitungFrekuensi(cariMaxFrekuensi(Tail(listNama), allNama), allNama):
+                    return FirstElmt(listNama)
                 else:
-                    return namaMax
+                    return cariMaxFrekuensi(Tail(listNama), allNama)
     
     listNama = kumpulkanMatkulDiulang(S)
     if IsEmpty(listNama):
@@ -188,21 +172,22 @@ def MatkulPalingSeringDiulang(S):
 def CountMhsDenganIPKRentang(S, a, b):
     # CountMhsDenganIPKRentang: SetTranskrip, real, real -> integer
     # {CountMhsDenganIPKRentang(S, a, b) menghitung jumlah mahasiswa 
-    #  dengan IPK dalam rentang [a, b]}
+    # dengan IPK dalam rentang [a, b]}
     
     if IsEmpty(S):
         return 0
     else:
-        if a <= IPKTranskrip(T) <= b:
+        T = FirstElmt(S)
+        ipk = IPKTranskrip(T)
+        if a <= ipk <= b:
             return 1 + CountMhsDenganIPKRentang(Tail(S), a, b)
         else:
             return CountMhsDenganIPKRentang(Tail(S), a, b)
 
 
-# PROGRAM TESTING
 if __name__ == "__main__":
 
-    # Membuat set transkrip kosong
+    # set transkrip kosong
     S1 = MakeSetTranskrip()
     print("S1 (kosong):", S1)
     
@@ -214,7 +199,6 @@ if __name__ == "__main__":
     
     # Menambah transkrip
     S2 = AddTranskrip(S1, T1)
-    print("\nSetelah AddTranskrip T1:")
     print("Jumlah transkrip:", len(S2))
     
     # Coba tambah lagi (harusnya tidak bertambah)
@@ -241,17 +225,16 @@ if __name__ == "__main__":
     S7 = AddNilaiMatkul(S6, "A11.02", "Daspro", 4.0)
     
     # Cari transkrip
-    T_Reno = CariTranskripMhs(S7, "A11.01")
-    print("Transkrip Reno:", GetNama(GetMhs(T_Reno)))
-    print("IPK Reno:", IPKTranskrip(T_Reno))
+    print(CariTranskripMhs(S7, "A11.01")) #Transkrip Reno
+    print(CariTranskripMhs(S7, "A11.03")) #Transkrip Budi
     
     # Top IPK
-    print(TopIPK(S7))
+    print(TopIPK(S7)) #Andi, IPK = 3.0
     # Count mengulang
-    print(CountMhsPernahMengulang(S7),"(Semua mengulang Daspro)")
+    print(CountMhsPernahMengulang(S7)) #(Semua mengulang Daspro)
     # Count lulus semua
-    print(CountMhsLulusSemuaMatkul(S7),"(Semua Lulus)")
+    print(CountMhsLulusSemuaMatkul(S7)) #(Semua Lulus)
     # Matkul paling sering diulang
-    print(MatkulPalingSeringDiulang(S7),"(Diulang oleh 3 mahasiswa)")
+    print(MatkulPalingSeringDiulang(S7)) #(Diulang oleh 3 mahasiswa)
     # Count IPK rentang
-    print(CountMhsDenganIPKRentang(S7, 2.0, 3.0),"(Reno Dan Budi)")
+    print(CountMhsDenganIPKRentang(S7, 2.0, 3.0)) #(Reno Dan Budi)

@@ -62,6 +62,6 @@ if __name__ == "__main__" :
     print(GetNilai(MK1))
     print(NilaiSekarangMK(MK1))
     print(NilaiSekarangMK(MK2))
-    print(SudahAmbilMK(MK1))
+    print(SudahAmbilMK(MK2))
     print(MengulangMK(MK1))
     print(LulusMK(MK1))
